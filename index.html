@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Netflix Clone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+    .header {
+      background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/404f3c83-6be9-4d07-a7b4-0f84e3edfb25/879fbb20-7c3d-44a5-8857-b2a88ddfca3b/IN-en-20240408-popsignuptwoweeks-perspective_alpha_website_large.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 90vh;
+      position: relative;
+    }
+    .header::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+    .nav {
+      position: relative;
+      z-index: 2;
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      width: 120px;
+    }
+    .signin-btn {
+      background-color: #e50914;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .header-content {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      max-width: 600px;
+    }
+    .header-content h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .header-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+    .email-form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .email-form input {
+      padding: 10px;
+      width: 60%;
+      border: none;
+      font-size: 1rem;
+    }
+    .email-form button {
+      background-color: #e50914;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="nav">
+      <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" alt="Netflix Logo">
+      <button class="signin-btn">Sign In</button>
+    </div>
+    <div class="header-content">
+      <h1>Unlimited movies, TV shows and more</h1>
+      <h2>Watch anywhere. Cancel anytime.</h2>
+      <form class="email-form">
+        <input type="email" placeholder="Email address" required>
+        <button type="submit">Get Started</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Movie Row Section -->
+  <section style="padding: 40px; background-color: #111;">
+    <h2 style="color: white; margin-bottom: 20px;">Popular on Netflix</h2>
+    <div style="display: flex; gap: 15px; overflow-x: auto;">
+      <div style="text-align: center;">
+        <img src="https://m.media-amazon.com/images/I/81r+LNBy5nL._AC_UF894,1000_QL80_.jpg" alt="Movie 1" style="width: 200px; border-radius: 4px;">
+        <button onclick="addToWatchLater('Movie 1')" style="margin-top: 8px;">Watch Later</button>
+      </div>
+      <div style="text-align: center;">
+        <img src="https://m.media-amazon.com/images/I/91iB8hyH-fL._AC_UF894,1000_QL80_.jpg" alt="Movie 2" style="width: 200px; border-radius: 4px;">
+        <button onclick="addToWatchLater('Movie 2')" style="margin-top: 8px;">Watch Later</button>
+      </div>
+      <div style="text-align: center;">
+        <img src="https://m.media-amazon.com/images/I/71KQHZqJ7OL._AC_UF894,1000_QL80_.jpg" alt="Movie 3" style="width: 200px; border-radius: 4px;">
+        <button onclick="addToWatchLater('Movie 3')" style="margin-top: 8px;">Watch Later</button>
+      </div>
+      <div style="text-align: center;">
+        <img src="https://m.media-amazon.com/images/I/71TVTqUDo9L._AC_UF894,1000_QL80_.jpg" alt="Movie 4" style="width: 200px; border-radius: 4px;">
+        <button onclick="addToWatchLater('Movie 4')" style="margin-top: 8px;">Watch Later</button>
+      </div>
+      <div style="text-align: center;">
+        <img src="https://m.media-amazon.com/images/I/81u2Jh9XbIL._AC_UF894,1000_QL80_.jpg" alt="Movie 5" style="width: 200px; border-radius: 4px;">
+        <button onclick="addToWatchLater('Movie 5')" style="margin-top: 8px;">Watch Later</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Watch Later List -->
+  <section style="padding: 40px; background-color: #000;">
+    <h2 style="color: white; margin-bottom: 20px;">Your Watch Later List</h2>
+    <ul id="watchLaterList" style="color: white; list-style-type: square; padding-left: 20px;"></ul>
+  </section>
+
+  <!-- Scripts -->
+  <script>
+    function addToWatchLater(movieTitle) {
+      let list = JSON.parse(localStorage.getItem('watchLater')) || [];
+      if (!list.includes(movieTitle)) {
+        list.push(movieTitle);
+        localStorage.setItem('watchLater', JSON.stringify(list));
+        alert(`"${movieTitle}" added to your Watch Later list!`);
+      } else {
+        alert(`"${movieTitle}" is already in your Watch Later list.`);
+      }
+    }
+
+    function displayWatchLaterList() {
+      const list = JSON.parse(localStorage.getItem('watchLater')) || [];
+      const listContainer = document.getElementById('watchLaterList');
+      listContainer.innerHTML = '';
+      if (list.length === 0) {
+        listContainer.innerHTML = '<li>No movies saved yet.</li>';
+        return;
+      }
+      list.forEach(movie => {
+        const li = document.createElement('li');
+        li.textContent = movie;
+        listContainer.appendChild(li);
+      });
+    }
+
+    window.onload = displayWatchLaterList;
+  </script>
+</body>
+</html>
